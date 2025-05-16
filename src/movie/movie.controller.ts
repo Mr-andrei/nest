@@ -1,6 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { MovieDto } from './dto/movie.dto';
 import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Controller('movie')
@@ -19,7 +18,7 @@ export class MovieController {
   }
 
   @Post()
-  create(@Body() dto: MovieDto) {
+  create(@Body() dto: CreateMovieDto) {
     return this.movieService.create(dto);
   }
 

@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateMovieDto {
 
@@ -10,7 +10,10 @@ export class CreateMovieDto {
   @IsInt()
   releaseYear: number;
 
-  @IsNotEmpty()
-  @IsInt()
+
   id: string;
+
+  @IsArray()
+  @IsUUID('4', { each: true })
+  actorIds: string[];
 }
