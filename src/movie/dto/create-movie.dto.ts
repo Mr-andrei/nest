@@ -13,6 +13,8 @@ export class CreateMovieDto {
 
   id: string;
 
+  imageUrl?: string
+
   @IsArray()
   @IsUUID('4', { each: true })
   actorIds: string[];

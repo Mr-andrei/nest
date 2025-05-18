@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+model Movie {
+  id String @id @default(uuid())
+
+  title       String
+  deccription String?
+  releaseYear Int     @map("release_year")
+  isAvailable Boolean @default(false) @map("is_available")
+  rating      Float   @default(0.0)
+  genre       Genre   @default(ACTION)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  reviews  Review[] @relation("movie_reviews")
+  actors   Actor[]
+  poster   Poster?  @relation(fields: [posterId], references: [id])
+  posterId String   @unique @map("poster_id")
+
+  @@map("movies")
+}
+
+model Poster {
+  id String @id @default(uuid())
+
+  imageUrl String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  movie     Movie?   @relation
+
+  @@map("posters")
+}
+
+model Review {
+  id String @id @default(uuid())
+
+  text   String
+  rating Decimal @default(0.0)
+
+  movie   Movie  @relation("movie_reviews", fields: [movieId], references: [id], onDelete: Cascade)
+  movieId String @map("movie_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reviews")
+}
+
+model Actor {
+  id String @id @default(uuid())
+
+  name String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  moviews   Movie[]
+
+  @@map("actors")
+}
+
+enum Genre {
+  ACTION
+  COMEDY
+  TRILLER
+
+  @@map("geners_enum")
+}
